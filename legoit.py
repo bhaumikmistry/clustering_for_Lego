@@ -8,6 +8,11 @@
 #					next step to mergee the k-means
 #					and the lego brick counter
 
+#		modified:	05 31 17 23:00 Bhaumik mistry 
+#					above works and tested
+#					edit on histogram print.
+
+
 
 import cv2
 import clusterPicture
@@ -112,8 +117,21 @@ if True:
 
 
 hist = cv2.calcHist([roi],[0],None,[256],[0,256])
-print hist
+# print hist
 
+
+# now only five pixel numbers will be calculated
+# For loop will only print the non zero values from
+# the histogra isnted of all the values.
+# pixVal is the pixel values 
+# pix is the number of occurance.
+pixVal = 0;
+for pix in hist:
+	if pix > 0:
+		pixVal+=1
+		print "pix Value = %d, hist of pixVal = %d" % (pixVal,pix)
+	else:
+		pixVal+=1
 
 
 
