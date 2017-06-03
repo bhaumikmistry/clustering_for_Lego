@@ -3,25 +3,29 @@
 #					resize, pixelate, posterize using
 # 					K-means, count the lego bricks.
 #
-#		modified:	04 02 17 9:14 Bhaumik mistry 
-#					cropping works fine,
-#					next step to mergee the k-means
-#					and the lego brick counter
-
-#		modified:	05 31 17 23:00 Bhaumik mistry 
-#					above works and tested
-#					edit on histogram print.
+#		modified:	04 02 17 9:14 bm 
+#						cropping works fine,
+#						next step to mergee the k-means
+#						and the lego brick counter
+#		modified:	05 31 17 23:00 bm 
+#						above works and tested
+#						edit on histogram print.
+#		modified:	06 02 17 18:50 bm
+#						
 
 
 
 import cv2
 import clusterPicture
+from brickCounter import testxx
+import colorDirectory
 #from matplotlib import pyplot as plt
 
 # To store the corners for 
 # cropping the image with mouse click
 refPt =[]
 cropping = False
+colorDirectory.getColorList()
 
 # To call when cropping us needed,
 # records the mouse click and crops
@@ -89,7 +93,7 @@ if len(refPt) == 2:
 
 # To write image
 if True:
-	cv2.imwrite("Test/crop_image.jpg",roi);
+	cv2.imwrite("Test/crop_image.png",roi);
 
 h,w = roi.shape[:2];
 
@@ -109,15 +113,20 @@ roi = clusterPicture.getClusterImage(roi, 5)
 
 # Color to gray
 # roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
 
 
 # To write image
 if True:
-	cv2.imwrite("Test/clust_image.jpg",roi);
+	cv2.imwrite("Test/clust_image.png",roi);
 
 
 hist = cv2.calcHist([roi],[0],None,[256],[0,256])
-# print hist
+
+#testing the histogram and graysvale image theory
+
+if True:
+	cv2.imwrite("Test/gray_clust_image.png",gray_roi);
 
 
 # now only five pixel numbers will be calculated
@@ -125,14 +134,15 @@ hist = cv2.calcHist([roi],[0],None,[256],[0,256])
 # the histogra isnted of all the values.
 # pixVal is the pixel values 
 # pix is the number of occurance.
-pixVal = 0;
+pixVal = 0;	# to get color information from histogram
+pixValArray =[]
 for pix in hist:
 	if pix > 0:
+		pixValArray.append(pixVal)
 		pixVal+=1
 		print "pix Value = %d, hist of pixVal = %d" % (pixVal,pix)
 	else:
 		pixVal+=1
-
 
 
 h,w = roi.shape[:2];
@@ -150,6 +160,9 @@ while True:
 		break
 
 cv2.destroyAllWindows()
+
+xx = testxx(roi,gray_roi,pixValArray)
+
 
 # display hstogram 
 #plt.hist(roi.ravel(),256,[0,256]); plt.show()
