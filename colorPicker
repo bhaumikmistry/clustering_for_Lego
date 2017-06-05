@@ -1,0 +1,3 @@
+def getColorList():
+	colors = ['Dark stone grey', 'Medium stone grey', 'Black', 'Dark Green', 'Bright yellow', 'Reddish Brown', 'Brick Yellow', 'Bright Blue', 'Earth Blue', 'White', 'Bright Orange', 'Medium Lavender']
+    return colors

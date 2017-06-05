@@ -11,26 +11,30 @@
 #						above works and tested
 #						edit on histogram print.
 #		modified:	06 02 17 18:50 bm
+#						started working on vsc2
+#						colorPicker will be helpful for 
+#						color list and changing colors
 #						
-
-
 
 import cv2
 import clusterPicture
-from brickCounter import testxx
-import colorDirectory
+import brickCounter
+import colorPicker
+import colorPaletteGenerator
 #from matplotlib import pyplot as plt
 
 # To store the corners for 
 # cropping the image with mouse click
 refPt =[]
 cropping = False
-colorDirectory.getColorList()
 
-# To call when cropping us needed,
-# records the mouse click and crops
-# the image and displays
+
 def click_and_crop(event,x,y,flags,param):
+	""" To call when cropping is needed 
+		records the mouse click and crops
+		the image and displays it.
+		The click parameters are stored in 
+		global varaibale refPt """
 	global refPt, cropping 
 
 	# Upper left of the crop square selection
@@ -47,8 +51,21 @@ def click_and_crop(event,x,y,flags,param):
 		cv2.rectangle(image,refPt[0],refPt[1],(0,255,0),2)
 		cv2.imshow("image",image)
 
+def displayColorsImage(pixArray):
+	""" Funtion to create and display an image """
+	lenList = len(pixArray)
+	h = 300
+	print lenList
+	print lenList*50
+	# creat a blank image
+	image = colorPaletteGenerator.createBlankImage(1,h,lenList*50)
+	# paint the created image with colors from list
+	image = colorPaletteGenerator.populateTheList(image,pixArray)
+	colorPaletteGenerator.displayImage(image,"newImage")
+
+
 # Read image
-image = cv2.imread("IMG_8009.PNG")
+image = cv2.imread("images/IMG_8009.PNG")
 h,w = image.shape[:2];
 
 
@@ -121,7 +138,7 @@ if True:
 	cv2.imwrite("Test/clust_image.png",roi);
 
 
-hist = cv2.calcHist([roi],[0],None,[256],[0,256])
+hist = cv2.calcHist([gray_roi],[0],None,[256],[0,256])
 
 #testing the histogram and graysvale image theory
 
@@ -147,7 +164,7 @@ for pix in hist:
 
 h,w = roi.shape[:2];
 # for display
-roi1 = cv2.resize(roi, (w*5,h*5),interpolation = cv2.INTER_NEAREST)
+roi1 = cv2.resize(gray_roi, (w*5,h*5),interpolation = cv2.INTER_NEAREST)
 
 while True:
 	cv2.namedWindow("clustered")
@@ -159,10 +176,11 @@ while True:
 	if key == ord("q"):
 		break
 
+displayColorsImage(pixValArray)
+
 cv2.destroyAllWindows()
 
-xx = testxx(roi,gray_roi,pixValArray)
-
+xx = brickCounter.testxx(roi,gray_roi,pixValArray)
 
 # display hstogram 
 #plt.hist(roi.ravel(),256,[0,256]); plt.show()

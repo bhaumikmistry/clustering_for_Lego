@@ -10,3 +10,5 @@ Final_back.png
 *.jpg
 
 *.rtf
+
+.vscode/launch.json
