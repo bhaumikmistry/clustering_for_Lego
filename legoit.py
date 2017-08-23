@@ -84,16 +84,17 @@ h,w = image.shape[:2];
 if h >= 600:
 	image = cv2.resize(image,(w/3,h/3),interpolation = cv2.INTER_AREA)
 
-# back of original image
+# back-up of original image
 clone = image.copy();
 
-# cropping prcoedure
+# cropping procedure
 cv2.namedWindow('image')
+#call cropping method to get ROI
 cv2.setMouseCallback('image',click_and_crop,image)
 #cv2.namedWindow("image1", cv2.WINDOW_NORMAL)
 
+#Debug
 #print refPt
-
 
 # Display image
 while True:
@@ -128,7 +129,7 @@ h,w = roi.shape[:2];
 ratio = w/float(h)
 print "ratio = ", ratio
 print "h = ",h," w = ",w
-print "please choose a new h and w will be set automatically adjusted"
+print "please choose a new height and width will be set automatically"
 newH = raw_input("type h = ")
 print "New h is: ",newH
 newW = float(newH)*ratio
@@ -158,8 +159,8 @@ if True:
 
 # now only five pixel numbers will be calculated
 # For loop will only print the non zero values from
-# the histogra isnted of all the values.
-# pixVal is the pixel values 
+# the histogram insted of all the values.
+# pixVal is the pixel value 
 # pix is the number of occurance.
 pixVal = 0;	# to get color information from histogram
 pixValArray =[]
