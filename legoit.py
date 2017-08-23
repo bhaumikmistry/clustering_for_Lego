@@ -53,15 +53,26 @@ def click_and_crop(event,x,y,flags,param):
 
 def displayColorsImage(pixArray):
 	""" Funtion to create and display an image """
+	print "Displaying color map"
 	lenList = len(pixArray)
 	h = 300
 	print lenList
 	print lenList*50
 	# creat a blank image
-	image = colorPaletteGenerator.createBlankImage(1,h,lenList*50)
+	imageColorMap = colorPaletteGenerator.createBlankImage(1,h,lenList*50)
 	# paint the created image with colors from list
-	image = colorPaletteGenerator.populateTheList(image,pixArray)
-	colorPaletteGenerator.displayImage(image,"newImage")
+	imageColorMap = colorPaletteGenerator.populateTheList(image,pixArray)
+	cv2.namedWindow('Color map')
+	cv2.moveWindow('Color map',500,300)
+	cv2.imshow('Color map', imageColorMap)
+
+def displayRefColorImage():
+	""" Display image for reffence lego ycolor image """
+	print "Displaying ref color image"
+	imageRefference = cv2.imread("Test/RefColorImage.png")
+	cv2.namedWindow('Refference lego color image')
+	cv2.moveWindow('Refference lego color image',630,300)
+	cv2.imshow('Refference lego color image', imageRefference)
 
 
 # Read image
@@ -141,7 +152,6 @@ if True:
 hist = cv2.calcHist([gray_roi],[0],None,[256],[0,256])
 
 #testing the histogram and graysvale image theory
-
 if True:
 	cv2.imwrite("Test/gray_clust_image.png",gray_roi);
 
@@ -161,7 +171,6 @@ for pix in hist:
 	else:
 		pixVal+=1
 
-
 h,w = roi.shape[:2];
 # for display
 roi1 = cv2.resize(gray_roi, (w*5,h*5),interpolation = cv2.INTER_NEAREST)
@@ -177,8 +186,15 @@ while True:
 		break
 
 displayColorsImage(pixValArray)
+displayRefColorImage()
 
-cv2.destroyAllWindows()
+# q to kill all
+while True:
+	# press q to close to
+	key = cv2.waitKey(1) & 0xFF
+	if key == ord("q"):
+		cv2.destroyAllWindows()
+		break
 
 xx = brickCounter.testxx(roi,gray_roi,pixValArray)
 

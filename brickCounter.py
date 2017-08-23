@@ -14,11 +14,11 @@ def displayColorInfo():
 	# for coloe list use this
 	print " List of available colors"
 	colorList = colorPicker.getColorAndValue()
-	print colorList
+	#print colorList
 
 def testxx(image,gray_image,pixValArray):
 	"""	TO DO RENAME THE FILE	"""
-	displayColorInfo()
+	#displayColorInfo()
 	(h,w,rgb) = image.shape[:3]
 	for pix in pixValArray:
 		text = pix

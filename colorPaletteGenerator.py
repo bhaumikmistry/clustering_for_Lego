@@ -4,6 +4,9 @@
 #
 #		modified:	04 04 17 08:56 Bhaumik mistry 
 #                       created
+#       modified:   06 08 17 08:22 bm
+#                       image write funtion.
+#                       image name :- RefColorImage.png
 
 ## for generating the color palette layout ##
 import cv2
@@ -62,5 +65,9 @@ def run():
     image = paintTheImage(image)
     # display the image created
     displayImage(image,"newImage")
+    # write image
+    #cv2.imwrite("Test/RefColorImage.png",image);
     # Destroy all the windows
     cv2.destroyAllWindows()
+
+#run()
