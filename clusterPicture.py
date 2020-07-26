@@ -10,8 +10,8 @@ import cv2
 from sklearn.cluster import MiniBatchKMeans
 
 
-def getClusterImage(image,clusterVal):
-
+def getClusterImage(image, clusterVal):
+	"""Clusterize the input image into clusterVal"""
 	(h,w) = image.shape[:2]
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
 

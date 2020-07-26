@@ -3,14 +3,24 @@
 #					resize, pixelate, posterize using
 # 					K-means, count the lego bricks.
 #
-#		modified:	04 02 17 9:14 Bhaumik mistry 
-#					cropping works fine,
-#					next step to mergee the k-means
-#					and the lego brick counter
-
+#		modified:	04 02 17 9:14 bm 
+#						cropping works fine,
+#						next step to mergee the k-means
+#						and the lego brick counter
+#		modified:	05 31 17 23:00 bm 
+#						above works and tested
+#						edit on histogram print.
+#		modified:	06 02 17 18:50 bm
+#						started working on vsc2
+#						colorPicker will be helpful for 
+#						color list and changing colors
+#						
 
 import cv2
 import clusterPicture
+import brickCounter
+import colorPicker
+import colorPaletteGenerator
 #from matplotlib import pyplot as plt
 
 # To store the corners for 
@@ -18,10 +28,13 @@ import clusterPicture
 refPt =[]
 cropping = False
 
-# To call when cropping us needed,
-# records the mouse click and crops
-# the image and displays
+
 def click_and_crop(event,x,y,flags,param):
+	""" To call when cropping is needed 
+		records the mouse click and crops
+		the image and displays it.
+		The click parameters are stored in 
+		global varaibale refPt """
 	global refPt, cropping 
 
 	# Upper left of the crop square selection
@@ -38,8 +51,32 @@ def click_and_crop(event,x,y,flags,param):
 		cv2.rectangle(image,refPt[0],refPt[1],(0,255,0),2)
 		cv2.imshow("image",image)
 
+def displayColorsImage(pixArray):
+	""" Funtion to create and display an image """
+	print "Displaying color map"
+	lenList = len(pixArray)
+	h = 300
+	print lenList
+	print lenList*50
+	# creat a blank image
+	imageColorMap = colorPaletteGenerator.createBlankImage(1,h,lenList*50)
+	# paint the created image with colors from list
+	imageColorMap = colorPaletteGenerator.populateTheList(image,pixArray)
+	cv2.namedWindow('Color map')
+	cv2.moveWindow('Color map',500,300)
+	cv2.imshow('Color map', imageColorMap)
+
+def displayRefColorImage():
+	""" Display image for reffence lego ycolor image """
+	print "Displaying ref color image"
+	imageRefference = cv2.imread("Test/RefColorImage.png")
+	cv2.namedWindow('Refference lego color image')
+	cv2.moveWindow('Refference lego color image',630,300)
+	cv2.imshow('Refference lego color image', imageRefference)
+
+
 # Read image
-image = cv2.imread("IMG_8009.PNG")
+image = cv2.imread("images/IMG_8009.PNG")
 h,w = image.shape[:2];
 
 
@@ -47,16 +84,17 @@ h,w = image.shape[:2];
 if h >= 600:
 	image = cv2.resize(image,(w/3,h/3),interpolation = cv2.INTER_AREA)
 
-# back of original image
+# back-up of original image
 clone = image.copy();
 
-# cropping prcoedure
+# cropping procedure
 cv2.namedWindow('image')
+#call cropping method to get ROI
 cv2.setMouseCallback('image',click_and_crop,image)
 #cv2.namedWindow("image1", cv2.WINDOW_NORMAL)
 
+#Debug
 #print refPt
-
 
 # Display image
 while True:
@@ -84,14 +122,14 @@ if len(refPt) == 2:
 
 # To write image
 if True:
-	cv2.imwrite("Test/crop_image.jpg",roi);
+	cv2.imwrite("Test/crop_image.png",roi);
 
 h,w = roi.shape[:2];
 
 ratio = w/float(h)
 print "ratio = ", ratio
 print "h = ",h," w = ",w
-print "please choose a new h and w will be set automatically adjusted"
+print "please choose a new height and width will be set automatically"
 newH = raw_input("type h = ")
 print "New h is: ",newH
 newW = float(newH)*ratio
@@ -104,22 +142,39 @@ roi = clusterPicture.getClusterImage(roi, 5)
 
 # Color to gray
 # roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+gray_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
 
 
 # To write image
 if True:
-	cv2.imwrite("Test/clust_image.jpg",roi);
+	cv2.imwrite("Test/clust_image.png",roi);
 
 
-hist = cv2.calcHist([roi],[0],None,[256],[0,256])
-print hist
+hist = cv2.calcHist([gray_roi],[0],None,[256],[0,256])
+
+#testing the histogram and graysvale image theory
+if True:
+	cv2.imwrite("Test/gray_clust_image.png",gray_roi);
 
 
-
+# now only five pixel numbers will be calculated
+# For loop will only print the non zero values from
+# the histogram insted of all the values.
+# pixVal is the pixel value 
+# pix is the number of occurance.
+pixVal = 0;	# to get color information from histogram
+pixValArray =[]
+for pix in hist:
+	if pix > 0:
+		pixValArray.append(pixVal)
+		pixVal+=1
+		print "pix Value = %d, hist of pixVal = %d" % (pixVal,pix)
+	else:
+		pixVal+=1
 
 h,w = roi.shape[:2];
 # for display
-roi1 = cv2.resize(roi, (w*5,h*5),interpolation = cv2.INTER_NEAREST)
+roi1 = cv2.resize(gray_roi, (w*5,h*5),interpolation = cv2.INTER_NEAREST)
 
 while True:
 	cv2.namedWindow("clustered")
@@ -131,7 +186,18 @@ while True:
 	if key == ord("q"):
 		break
 
-cv2.destroyAllWindows()
+displayColorsImage(pixValArray)
+displayRefColorImage()
+
+# q to kill all
+while True:
+	# press q to close to
+	key = cv2.waitKey(1) & 0xFF
+	if key == ord("q"):
+		cv2.destroyAllWindows()
+		break
+
+xx = brickCounter.testxx(roi,gray_roi,pixValArray)
 
 # display hstogram 
 #plt.hist(roi.ravel(),256,[0,256]); plt.show()
