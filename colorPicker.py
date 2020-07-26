@@ -1,11 +1,11 @@
-# This file holdes the information about the colors
+# This file holds the information about the colors
 
 ##
-#		notes:		A dictonary for the colors 
-#					and the pixel imformation
+#		notes:		A dict for the colors 
+#					and the pixel information
 #
 #		modified:	bm	03 06 17	created
-#						created the funtion to get the color dictionary
+#						created the function to get the color dictionary
 #
 ############- LEGO list of colors -##############
 # family		color    			R 	G 	B 	#
@@ -28,7 +28,7 @@
 # Bright Orange  								#
 # 			Bright Orange			255	130	0	#
 # Lilac											#
-# 			Medium Lavendel			160	94	181	#
+# 			Medium Lavender			160	94	181	#
 # Red 											#
 # 			Bright Red 				239	51	64	#
 #################################################

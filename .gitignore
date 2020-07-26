@@ -1,14 +1,1 @@
-
-Final_back.png
-
-*.pyc
-
-*.png
-
-*.jpeg
-
-*.jpg
-
-*.rtf
-
-.vscode/launch.json
+env/bin env/include env/lib env/pyvenv.cfg

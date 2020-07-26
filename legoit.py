@@ -34,30 +34,30 @@ def click_and_crop(event,x,y,flags,param):
 		records the mouse click and crops
 		the image and displays it.
 		The click parameters are stored in 
-		global varaibale refPt """
+		global variable refPt """
 	global refPt, cropping 
 
 	# Upper left of the crop square selection
 	if event == cv2.EVENT_LBUTTONDOWN:
 		refPt = [(x,y)]
-		print refPt[0]
+		print(refPt[0])
 		cropping = True
 
 	# Lower right of the crop square selection
 	elif event == cv2.EVENT_LBUTTONUP:
 		refPt.append((x,y))
-		print refPt
+		print(refPt)
 		cropping = False
 		cv2.rectangle(image,refPt[0],refPt[1],(0,255,0),2)
 		cv2.imshow("image",image)
 
 def displayColorsImage(pixArray):
-	""" Funtion to create and display an image """
-	print "Displaying color map"
+	""" Function to create and display an image """
+	print("Displaying color map")
 	lenList = len(pixArray)
 	h = 300
-	print lenList
-	print lenList*50
+	print(lenList)
+	print(lenList*50)
 	# creat a blank image
 	imageColorMap = colorPaletteGenerator.createBlankImage(1,h,lenList*50)
 	# paint the created image with colors from list
@@ -67,22 +67,22 @@ def displayColorsImage(pixArray):
 	cv2.imshow('Color map', imageColorMap)
 
 def displayRefColorImage():
-	""" Display image for reffence lego ycolor image """
-	print "Displaying ref color image"
-	imageRefference = cv2.imread("Test/RefColorImage.png")
-	cv2.namedWindow('Refference lego color image')
-	cv2.moveWindow('Refference lego color image',630,300)
-	cv2.imshow('Refference lego color image', imageRefference)
+	""" Display image for reffence lego color image """
+	print("Displaying ref color image")
+	imageReference = cv2.imread("Test/RefColorImage.png")
+	cv2.namedWindow('Reference lego color image')
+	cv2.moveWindow('Reference lego color image',630,300)
+	cv2.imshow('Reference lego color image', imageReference)
 
 
 # Read image
-image = cv2.imread("images/IMG_8009.PNG")
+image = cv2.imread("test.jpg")
 h,w = image.shape[:2];
 
 
 # Resize image to fit in the screen
 if h >= 600:
-	image = cv2.resize(image,(w/3,h/3),interpolation = cv2.INTER_AREA)
+	image = cv2.resize(image,(int(w/3),int(h/3)),interpolation = cv2.INTER_AREA)
 
 # back-up of original image
 clone = image.copy();
@@ -111,7 +111,7 @@ if len(refPt) == 2:
 	# Display image
 	while True:
 		cv2.namedWindow('ROI')
-		cv2.moveWindow('ROI',0,50+h/3)
+		cv2.moveWindow('ROI',0,int(50+h/3))
 		cv2.imshow('ROI', roi)
 		key = cv2.waitKey(1) & 0xFF
 
@@ -127,13 +127,13 @@ if True:
 h,w = roi.shape[:2];
 
 ratio = w/float(h)
-print "ratio = ", ratio
-print "h = ",h," w = ",w
-print "please choose a new height and width will be set automatically"
-newH = raw_input("type h = ")
-print "New h is: ",newH
+print("ratio = ", ratio)
+print("h = ",h," w = ",w)
+print("please choose a new height and width, will be set automatically")
+newH = input("type h = ")
+print("New h is: ",newH)
 newW = float(newH)*ratio
-print "New w is: ",newW
+print("New w is: ",newW)
 roi = cv2.resize(roi,(int(newW),int(newH)),interpolation = cv2.INTER_AREA)
 
 
@@ -168,7 +168,7 @@ for pix in hist:
 	if pix > 0:
 		pixValArray.append(pixVal)
 		pixVal+=1
-		print "pix Value = %d, hist of pixVal = %d" % (pixVal,pix)
+		print(pixVal,pix)
 	else:
 		pixVal+=1
 
@@ -187,7 +187,7 @@ while True:
 		break
 
 displayColorsImage(pixValArray)
-displayRefColorImage()
+#displayRefColorImage()
 
 # q to kill all
 while True:
@@ -199,7 +199,7 @@ while True:
 
 xx = brickCounter.testxx(roi,gray_roi,pixValArray)
 
-# display hstogram 
+# display histogram 
 #plt.hist(roi.ravel(),256,[0,256]); plt.show()
 
 
