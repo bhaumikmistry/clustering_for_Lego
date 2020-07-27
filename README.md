@@ -21,7 +21,6 @@ Main structure
 -legoit
     |--brickCounter
     |--clusterPicture
-    |--colorDirectory
     |--colorPicker
 ```
 Script to generate the colorPalette
@@ -32,4 +31,16 @@ Script to generate the colorPalette
 initial structure and code
 ```shell
 -main_clustering.py
+```
+
+### Create and use virutalenv on mac
+```
+# install 
+python3 -m pip install --user virtualenv
+# create env
+python3 -m venv env
+# start virtual env
+source env/bin/activate
+# stop virtual evn
+deactivate
 ```
