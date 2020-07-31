@@ -25,7 +25,7 @@ def getClusterImage(image, clusterVal):
 	labels = clt.fit_predict(image)
 	quant = clt.cluster_centers_.astype("uint8")[labels]
 
-	# #reshape the feature to an iamge
+	# #reshape the feature to an image
 	quant = quant.reshape((h,w,3))
 	image = image.reshape((h,w,3))
 

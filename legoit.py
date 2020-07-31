@@ -76,7 +76,8 @@ def displayRefColorImage():
 
 
 # Read image
-image = cv2.imread("test.jpg")
+# image = cv2.imread("test.jpg")
+image = cv2.imread("IMG_3698.JPG")
 h,w = image.shape[:2];
 
 
@@ -93,9 +94,6 @@ cv2.namedWindow('image')
 cv2.setMouseCallback('image',click_and_crop,image)
 #cv2.namedWindow("image1", cv2.WINDOW_NORMAL)
 
-#Debug
-#print refPt
-
 # Display image
 while True:
 	cv2.imshow("image",image)
@@ -103,6 +101,7 @@ while True:
 
 	# press q to close to
 	if key == ord("q"):
+		cv2.destroyAllWindows()
 		break
 
 # draw
@@ -117,6 +116,7 @@ if len(refPt) == 2:
 
 		# press q to close to
 		if key == ord("q"):
+			cv2.destroyAllWindows()
 			break
 
 
@@ -129,7 +129,7 @@ h,w = roi.shape[:2];
 ratio = w/float(h)
 print("ratio = ", ratio)
 print("h = ",h," w = ",w)
-print("please choose a new height and width, will be set automatically")
+print("please choose a new height, width will be set automatically")
 newH = input("type h = ")
 print("New h is: ",newH)
 newW = float(newH)*ratio
@@ -138,7 +138,7 @@ roi = cv2.resize(roi,(int(newW),int(newH)),interpolation = cv2.INTER_AREA)
 
 
 # Get clustered image
-roi = clusterPicture.getClusterImage(roi, 5)
+roi = clusterPicture.getClusterImage(roi, 6)
 
 # Color to gray
 # roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)

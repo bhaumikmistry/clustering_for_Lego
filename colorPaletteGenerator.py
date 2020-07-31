@@ -70,4 +70,4 @@ def run():
     # Destroy all the windows
     cv2.destroyAllWindows()
 
-run()
+# run()

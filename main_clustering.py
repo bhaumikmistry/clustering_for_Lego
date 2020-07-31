@@ -18,8 +18,8 @@ h,w = image.shape[:2];
 
 
 
-print "h ", h;
-print "w ", w;
+print("h ", h)
+print("w ", w)
 black=0;
 white=0;
 lb=0;
